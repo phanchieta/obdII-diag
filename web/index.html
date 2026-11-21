@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="obd-token" content="__TOKEN__">
+<meta name="color-scheme" content="light dark">
+<title>OBD-II Diag</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="loading">
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-engine" viewBox="0 0 24 24"><path d="M7 4v2h3v2H7L5 10v3H3v-3H1v8h2v-3h2v3h3l2 2h8v-3h2v-3h3V9h-3V6h-5l-2-2z"/></symbol>
+  <symbol id="i-bt" viewBox="0 0 24 24"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.2v.1"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><path d="M8 3h8l5 5v8l-5 5H8l-5-5V8z"/><path d="M12 8v5M12 16v.1"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.1"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 1 0 18 17"/><path d="M20 4.5v7h-7"/></symbol>
+  <symbol id="i-erase" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L5 13h6l-1 9 8-11h-6z"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+</svg>
+
+<header class="top"><div class="top-in">
+  <div class="brand">
+    <div class="brand-mark"><svg class="ic fill"><use href="#i-engine"/></svg></div>
+    <div><h1 data-i18n="app.title">OBD-II Diag</h1><p id="vehicle-line" data-i18n="app.subtitle"></p></div>
+  </div>
+  <span class="chip" id="status-chip" data-s="off" role="status" aria-live="polite"><span class="dot"></span><span class="txt" id="status-text"></span></span>
+  <span class="chip" id="volt-chip" hidden data-i18n-attr="title:hdr.volt_title"><svg class="ic"><use href="#i-bolt"/></svg><span id="volt-text">—</span></span>
+  <div class="lang" role="group" data-i18n-attr="aria-label:hdr.lang">
+    <button class="lang-btn" type="button" data-lang="pt" aria-pressed="false" title="Português (Brasil)" aria-label="Português (Brasil)">
+      <svg viewBox="0 0 24 17" width="24" height="17" aria-hidden="true"><rect width="24" height="17" rx="2.5" fill="#009C3B"/><path d="M12 2.3l9.6 6.2L12 14.7 2.4 8.5z" fill="#FFDF00"/><circle cx="12" cy="8.5" r="3.7" fill="#002776"/><path d="M8.4 7.6c2.4-.7 5.2-.3 7.2 1.2" stroke="#fff" stroke-width=".75" fill="none"/></svg><span>PT</span>
+    </button>
+    <button class="lang-btn" type="button" data-lang="en" aria-pressed="false" title="English (US)" aria-label="English (US)">
+      <svg viewBox="0 0 24 17" width="24" height="17" aria-hidden="true"><defs><clipPath id="flag-us"><rect width="24" height="17" rx="2.5"/></clipPath></defs><g clip-path="url(#flag-us)"><rect width="24" height="17" fill="#fff"/><g fill="#B22234"><rect y="0" width="24" height="1.31"/><rect y="2.62" width="24" height="1.31"/><rect y="5.23" width="24" height="1.31"/><rect y="7.85" width="24" height="1.31"/><rect y="10.46" width="24" height="1.31"/><rect y="13.08" width="24" height="1.31"/><rect y="15.69" width="24" height="1.31"/></g><rect width="9.6" height="9.15" fill="#3C3B6E"/><g fill="#fff"><circle cx="1.6" cy="1.5" r=".5"/><circle cx="4" cy="1.5" r=".5"/><circle cx="6.4" cy="1.5" r=".5"/><circle cx="8.2" cy="1.5" r=".5"/><circle cx="2.8" cy="3.3" r=".5"/><circle cx="5.2" cy="3.3" r=".5"/><circle cx="7.6" cy="3.3" r=".5"/><circle cx="1.6" cy="5.1" r=".5"/><circle cx="4" cy="5.1" r=".5"/><circle cx="6.4" cy="5.1" r=".5"/><circle cx="8.2" cy="5.1" r=".5"/><circle cx="2.8" cy="6.9" r=".5"/><circle cx="5.2" cy="6.9" r=".5"/><circle cx="7.6" cy="6.9" r=".5"/></g></g></svg><span>EN</span>
+    </button>
+  </div>
+  <button class="btn icon ghost" id="theme-btn" data-i18n-attr="title:hdr.theme;aria-label:hdr.theme"><svg class="ic"><use href="#i-moon"/></svg></button>
+  <button class="btn primary" id="conn-btn"><svg class="ic"><use href="#i-plug"/></svg><span data-i18n="hdr.connect"></span></button>
+</div></header>
+<div class="banner-wrap" id="banner-wrap"></div>
+
+<nav class="tabs" role="tablist" data-i18n-attr="aria-label:tab.aria">
+  <button class="tab" role="tab" aria-selected="true" data-tab="diag"><svg class="ic"><use href="#i-engine"/></svg><span data-i18n="tab.diag"></span> <span class="badge" id="diag-badge" hidden>0</span></button>
+  <button class="tab" role="tab" aria-selected="false" data-tab="dash" data-i18n="tab.dash"></button>
+  <button class="tab" role="tab" aria-selected="false" data-tab="data" data-i18n="tab.data"></button>
+  <button class="tab" role="tab" aria-selected="false" data-tab="hist" data-i18n="tab.hist"></button>
+  <button class="tab" role="tab" aria-selected="false" data-tab="help" data-i18n="tab.help"></button>
+</nav>
+
+<main>
+<!-- ===================== DIAGNOSIS ===================== -->
+<section id="tab-diag" role="tabpanel" class="stack">
+  <div id="diag-empty" class="card empty">
+    <h2 data-i18n="empty.title_idle"></h2>
+    <p data-i18n="empty.p_idle"></p>
+    <ol class="steps-mini">
+      <li data-i18n="empty.step1"></li>
+      <li data-i18n="empty.step2"></li>
+      <li data-i18n-html="empty.step3"></li>
+    </ol>
+    <div class="btns">
+      <button class="btn primary" data-act="connect"><svg class="ic"><use href="#i-plug"/></svg><span data-i18n="empty.btn_connect"></span></button>
+      <button class="btn" data-act="demo"><svg class="ic"><use href="#i-play"/></svg><span data-i18n="empty.btn_demo"></span></button>
+      <button class="btn ghost" data-act="help" data-i18n="empty.btn_help"></button>
+    </div>
+  </div>
+
+  <div id="diag-main" class="stack" hidden>
+    <div class="card hero" id="hero">
+      <div class="lamp" id="hero-lamp" aria-hidden="true"><svg class="ic fill"><use href="#i-engine"/></svg></div>
+      <div>
+        <h2 id="hero-title"></h2>
+        <p class="sub" id="hero-sub"></p>
+        <p class="meta" id="hero-meta"></p>
+        <div class="hero-actions">
+          <button class="btn" id="btn-read"><svg class="ic"><use href="#i-refresh"/></svg><span data-i18n="hero.btn_read"></span></button>
+          <button class="btn danger" id="btn-clear"><svg class="ic"><use href="#i-erase"/></svg><span data-i18n="hero.btn_clear"></span></button>
+          <button class="btn" id="btn-copy"><svg class="ic"><use href="#i-copy"/></svg><span data-i18n="hero.btn_copy"></span></button>
+        </div>
+      </div>
+      <div class="big-n" aria-live="polite"><b id="hero-n">0</b><span id="hero-n-l"></span></div>
+    </div>
+    <div id="stale"></div>
+    <div id="verdict"></div>
+    <div id="tips" class="tips"></div>
+    <div id="warnings" class="tips"></div>
+
+    <div id="stored-wrap" class="stack">
+      <div class="sec-title"><span data-i18n="sec.stored"></span> <span class="n" id="n-stored"></span></div>
+      <div id="codes-stored" class="stack"></div>
+    </div>
+    <div id="pending-wrap" class="stack" hidden>
+      <div class="sec-title"><span data-i18n="sec.pending"></span> <span class="n" data-i18n="sec.pending_hint"></span></div>
+      <p class="small-note" style="margin:0 2px" data-i18n="sec.pending_note"></p>
+      <div id="codes-pending" class="stack"></div>
+    </div>
+    <div id="perm-wrap" class="stack" hidden>
+      <div class="sec-title"><span data-i18n="sec.permanent"></span> <span class="n" data-i18n="sec.permanent_hint"></span></div>
+      <div id="codes-perm" class="stack"></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card card-pad">
+        <div class="sec-title" style="margin-top:0" data-i18n="sec.freeze"></div>
+        <div id="freeze"></div>
+      </div>
+      <div class="card card-pad">
+        <div class="sec-title" style="margin-top:0" data-i18n="sec.monitors"></div>
+        <ul class="mon-list" id="monitors"></ul>
+        <p class="small-note" data-i18n="sec.monitors_note"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LIVE DASHBOARD ===================== -->
+<section id="tab-dash" role="tabpanel" class="stack" hidden>
+  <div id="dash-note" class="banner" hidden></div>
+  <div class="cluster">
+    <div class="card gauge-card"><div class="gauge" id="g-rpm"></div></div>
+    <div class="center-col" id="center-col"></div>
+    <div class="card gauge-card"><div class="gauge" id="g-speed"></div></div>
+  </div>
+  <div class="tiles" id="tiles"></div>
+  <div class="card chart-card">
+    <div class="chart-head">
+      <h3 id="chart-title"></h3>
+      <div class="chart-tools">
+        <label class="sr" for="chart-sel" data-i18n="chart.select"></label>
+        <select id="chart-sel"></select>
+        <button class="btn sm" id="chart-table-btn" aria-pressed="false" data-i18n="chart.table_btn"></button>
+      </div>
+    </div>
+    <div class="chart-box" id="chart-box"></div>
+    <div id="chart-table" hidden></div>
+  </div>
+</section>
+
+<!-- ===================== CAR DATA ===================== -->
+<section id="tab-data" role="tabpanel" class="stack" hidden>
+  <div class="two-col">
+    <div class="card card-pad"><div class="sec-title" style="margin-top:0" data-i18n="data.vehicle"></div><dl class="kv" id="vehicle-kv"></dl></div>
+    <div class="card card-pad"><div class="sec-title" style="margin-top:0"><span data-i18n="data.sensors"></span> <span class="n" id="n-sup"></span></div><p class="small-note" id="sup-list" style="margin-top:6px"></p></div>
+  </div>
+  <div class="card card-pad">
+    <div class="sec-title" style="margin-top:0" data-i18n="data.live"></div>
+    <table class="t" id="live-table"><thead><tr><th data-i18n="th.sensor"></th><th class="num" data-i18n="th.value"></th><th class="num" data-i18n="th.updated"></th></tr></thead><tbody></tbody></table>
+  </div>
+  <div class="card card-pad">
+    <div class="row-between"><div class="sec-title" style="margin:0" data-i18n="data.log"></div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <label class="check"><input type="checkbox" id="raw-on"> <span data-i18n="data.raw"></span></label>
+        <button class="btn sm" id="log-copy"><svg class="ic"><use href="#i-copy"/></svg><span data-i18n="data.log_copy"></span></button>
+      </div></div>
+    <div class="log" id="log" style="margin-top:10px" aria-live="off"></div>
+    <div class="sec-title" data-i18n="data.terminal"></div>
+    <form class="term" id="term-form"><input id="term-in" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:data.term_ph;aria-label:data.term_aria"><button class="btn" type="submit" data-i18n="data.term_send"></button></form>
+    <div class="log" id="term-out" style="max-height:160px" hidden></div>
+  </div>
+</section>
+
+<!-- ===================== HISTORY ===================== -->
+<section id="tab-hist" role="tabpanel" hidden>
+  <div class="hist-grid">
+    <div class="card hist-list" id="hist-list"><div class="card-pad muted" data-i18n="hist.loading"></div></div>
+    <div id="hist-detail" class="stack"><div class="card card-pad muted" id="hist-hint"></div></div>
+  </div>
+</section>
+
+<!-- ===================== HELP ===================== -->
+<section id="tab-help" role="tabpanel" class="stack help" hidden>
+  <div class="card card-pad">
+    <h3 data-i18n="help.before.title"></h3>
+    <ol><li data-i18n-html="help.before.1"></li><li data-i18n-html="help.before.2"></li></ol>
+  </div>
+  <div class="two-col">
+    <div class="card card-pad">
+      <h3 data-i18n="help.win.title"></h3>
+      <ol><li data-i18n-html="help.win.1"></li><li data-i18n-html="help.win.2"></li><li data-i18n-html="help.win.3"></li><li data-i18n-html="help.win.4"></li><li data-i18n-html="help.win.5"></li></ol>
+    </div>
+    <div class="card card-pad">
+      <h3 data-i18n="help.linux.title"></h3>
+      <ol><li data-i18n-html="help.linux.1"></li><li data-i18n-html="help.linux.2"></li><li data-i18n-html="help.linux.3"></li></ol>
+    </div>
+  </div>
+  <div class="card card-pad">
+    <h3 data-i18n="help.fail.title"></h3>
+    <ul><li data-i18n-html="help.fail.1"></li><li data-i18n-html="help.fail.2"></li><li data-i18n-html="help.fail.3"></li><li data-i18n-html="help.fail.4"></li><li data-i18n-html="help.fail.5"></li></ul>
+    <p style="margin-top:12px"><button class="btn" id="btn-diag"><svg class="ic"><use href="#i-bt"/></svg><span data-i18n="diag.btn"></span></button></p>
+    <div id="diag-out" hidden></div>
+  </div>
+  <div class="card card-pad">
+    <h3 data-i18n="help.mil.title"></h3>
+    <ul><li data-i18n-html="help.mil.1"></li><li data-i18n-html="help.mil.2"></li><li data-i18n-html="help.mil.3"></li><li data-i18n-html="help.mil.4"></li><li data-i18n-html="help.mil.5"></li><li data-i18n="help.mil.6"></li></ul>
+  </div>
+  <div class="card card-pad">
+    <h3 data-i18n="help.ask.title"></h3>
+    <p data-i18n-html="help.ask.p"></p>
+  </div>
+</section>
+</main>
+
+<div id="modal-root"></div>
+<div class="toast-root" id="toast-root" aria-live="polite"></div>
+<div id="tooltip" role="tooltip" hidden></div>
+<script src="i18n.js"></script>
+<script src="gauges.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
