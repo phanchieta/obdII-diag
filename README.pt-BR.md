@@ -4,6 +4,8 @@
 
 [🇺🇸 English](README.md) · 🇧🇷 Português
 
+> 🤖 **Feito com IA.** Este projeto foi escrito com a ajuda de um assistente de programação com IA — veja o [aviso sobre IA](#aviso-sobre-ia) abaixo.
+
 ![Aba Diagnóstico: luz de injeção acesa, com cada código de falha explicado](docs/screenshot-diagnosis-pt.png)
 
 - **Diagnóstico em português claro.** Cada código vem com o que significa, *posso continuar rodando?*, as causas mais prováveis (as mais comuns primeiro) e o que fazer. Também mostra os dados congelados da falha (freeze frame) e os monitores de prontidão.
@@ -92,6 +94,16 @@ O histórico (um arquivo JSON por leitura) e o log ficam em `./data/`. Use `OBD2
 - Se o defeito continuar lá, a luz volta e o app percebe sozinho.
 - O terminal embutido (aba Dados do carro) só aceita alguns comandos de leitura do leitor e consultas OBD somente de leitura.
 - Use por sua conta e risco; veja a [licença](LICENSE). Não substitui um mecânico qualificado.
+
+## Aviso sobre IA
+
+Este projeto foi feito com a ajuda de um assistente de programação com IA, dirigido e testado pelo dono do repositório num carro de verdade
+(um Honda Fit 2011 com leitor ELM327 Bluetooth). O código, as explicações dos códigos de falha e as traduções foram geradas por IA.
+Há testes automatizados e o uso num veículo real, mas ainda podem existir erros.
+
+Não trate as explicações como orientação profissional. Antes de agir em algo importante — principalmente antes de apagar códigos,
+ou de decidir se é seguro rodar com uma luz de aviso acesa — confirme com um mecânico qualificado e com o manual de serviço do veículo.
+Como em qualquer software de código aberto, leia o código antes de confiar nele. Relatos de erros e correções são bem-vindos.
 
 ## Problemas comuns
 
