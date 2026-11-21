@@ -1,0 +1,520 @@
+# Trouble-code guidance in English (any OBD-II car, with Honda notes). Mirrors curated.pt.txt: same codes, same order.
+# You can edit it by hand. Blocks are separated by a blank line. Lines starting with # are comments.
+#
+#   CODE | title | system | severity        (1 low · 2 medium · 3 high · 4 critical)
+#   e: what it means      r: can I keep driving?      c: causes (separate with ;)      a: what to do (separate with ;)
+#   h: Honda tip (only shown when the vehicle name contains "Honda")
+#
+# Remember: a code points to a CIRCUIT or SYSTEM, not necessarily to the part that failed.
+# Repetitive families (O2 sensors, cylinders, coils, injectors, solenoids) are generated in kb.py.
+
+# ================================================================= ENGINE: AIR AND FUEL
+
+P0125 | Engine took too long to warm up (closed loop not enabled) | Cooling | 1
+e: The engine took too long to reach operating temperature, so the ECU could not switch to fine mixture control using the oxygen sensor.
+c: Thermostat stuck open; Faulty coolant temperature (ECT) sensor reading wrong; Low coolant level; Cooling fan running when it should not
+a: Watch on the Dashboard whether the temperature reaches 85–95 °C within a few minutes; Check the coolant level (engine cold); If the temperature rises very slowly, replace the thermostat; If the car's gauge and the app disagree, test the ECT sensor
+
+P0128 | Thermostat: coolant temperature below the regulating temperature | Cooling | 1
+r: Yes. There is no immediate risk, but the engine runs cold, using more fuel and polluting more.
+e: The coolant temperature did not reach the expected value within the normal time, a typical sign of a thermostat stuck open.
+c: Thermostat stuck open (most common cause); Faulty coolant temperature (ECT) sensor reading wrong; Low coolant or air in the cooling system
+a: On the Dashboard, check whether the engine temperature takes too long to pass 80 °C or stays below 80 °C on the highway; Replace the thermostat (cheap part, but replace the coolant at the same time); If the thermostat is fine, test the ECT sensor
+h: It usually comes with weak cabin heating and slightly higher fuel consumption.
+
+P0171 | System too lean (bank 1) | Fuel and air intake | 2
+r: Yes, carefully. There may be loss of power and higher fuel consumption. If the engine misfires or stumbles, avoid heavy throttle.
+e: The ECU is already adding extra fuel and, even so, the oxygen sensor still reports too much air in the mixture: either fuel is missing or air is getting in where it should not.
+c: Air leak (cracked vacuum hose, intake manifold gasket, air-filter boot, PCV valve); Dirty throttle body or idle air passages; Low fuel pressure (clogged filter, weak pump); Dirty fuel injectors; MAP or A/F (oxygen) sensor reading wrong; Exhaust leak before the sensor
+a: On the Dashboard, look at the long-term fuel trim (LTFT): above +10% confirms a lean mixture; Inspect vacuum hoses, clamps and the rubber boot between the air filter and the throttle body; Clean the throttle body; Replace the fuel filter if it is due and test the pump pressure; Have the injectors cleaned; If it persists, test the A/F and MAP sensors with a scanner
+h: On flex-fuel cars, switching fuel (gasoline to ethanol or the other way round) can cause a mixture drift for a few days while the ECU relearns; if the code keeps coming back, look for a mechanical cause.
+
+P0172 | System too rich (bank 1) | Fuel and air intake | 2
+r: Yes, carefully. High fuel consumption and, if it lasts, it can foul the spark plugs and damage the catalytic converter.
+e: The oxygen sensor reports too much fuel in the mixture and the ECU has already tried to reduce injection.
+c: Clogged air filter; Leaking or dirty fuel injector; EVAP purge valve stuck open; Coolant temperature sensor reading too cold; High fuel pressure (regulator, return line); A/F or MAP sensor reading wrong; Bad spark plugs or coils
+a: On the Dashboard, look at the long-term trim (LTFT): below −10% confirms a rich mixture; Replace or inspect the air filter; Check whether the exhaust smells of fuel; Test the EVAP purge valve; Check the engine temperature on the Dashboard (if it always reads cold, suspect the ECT sensor or the thermostat)
+
+P0174 | System too lean (bank 2) | Fuel and air intake | 2
+e: Same as P0171 but on the second bank of cylinders (V6/V8/boxer engines). On an inline 4-cylinder engine this code should not appear.
+c: Air leak; Low fuel pressure; Air flow / pressure sensor; Dirty injectors
+a: See the tips for P0171; If P0171 and P0174 appear together, the cause is common to both banks (air, fuel pressure or air flow meter)
+
+P0175 | System too rich (bank 2) | Fuel and air intake | 2
+e: Same as P0172 but on the second bank of cylinders.
+c: Clogged air filter; Leaking injectors; High fuel pressure; EVAP purge valve stuck open
+a: See the tips for P0172
+
+P0191 | Fuel rail pressure sensor out of range | Fuel | 2
+c: Fuel pressure sensor; Weak pump or clogged filter; Wiring
+a: Check the fuel pressure with a gauge; Replace the fuel filter if it is due; Test the sensor
+
+P0217 | Engine overheating | Cooling | 4
+r: NO. Stop in a safe place, switch the engine off and let it cool down. Driving while overheated can warp the cylinder head.
+e: The coolant temperature went above the safe limit.
+c: Low coolant (leak); Radiator fan not running (fuse, relay or motor); Thermostat stuck closed; Clogged radiator; Weak water pump; Faulty radiator cap
+a: Never open the radiator cap while the engine is hot; With the engine cold, check the level and look for leaks; Check that the fan runs when you switch the A/C on; Have it checked by a mechanic before driving again
+
+P0230 | Fuel pump circuit | Fuel | 3
+r: It can leave the car stranded suddenly. Avoid long trips.
+c: Fuel pump fuse or relay; Wiring or connector; Faulty fuel pump; Inertia (safety) switch
+a: Check the fuel pump fuse and relay; When you turn the ignition on you should hear the pump hum for 2 seconds; If you do not hear it, test the relay, wiring and pump
+
+# ================================================================= ENGINE: IGNITION AND ENGINE SPEED
+
+P0016 | Crankshaft / camshaft position correlation (bank 1) | Valve timing | 3
+r: Avoid driving until it is checked: if the timing is wrong the engine can suffer serious damage.
+e: The ECU sees that the camshaft position does not match the crankshaft position, as if the chain or belt were out of time or one of the sensors were failing.
+c: Timing chain or belt stretched or jumped a tooth; Faulty camshaft (CMP) or crankshaft (CKP) sensor; Damaged reluctor wheel; Low or degraded oil (on engines with variable valve timing); Wiring or connector
+a: If there is noise, misfires or hard starting, do not force the engine; Check the oil level and condition; Ask a mechanic to check the timing and the sensors
+
+P0300 | Random / multiple cylinder misfire | Ignition | 3
+r: If the light is FLASHING, stop as soon as it is safe: a strong misfire destroys the catalytic converter. If the light is steady and the engine runs well you can drive carefully to the workshop, without heavy throttle.
+e: The ECU detected that one or more cylinders did not burn the mixture properly (the engine "misfires" or "stumbles"). With P0300 it could not pinpoint a single cylinder.
+c: Worn spark plugs (most common cause); Faulty ignition coils or leads; Bad fuel or water in the fuel; Air leak (together with P0171); Dirty fuel injectors; Low compression (valves, rings); Crankshaft or camshaft sensor
+a: Check whether P0301 to P0304 are also present: they point to the cylinder with the problem; Inspect and replace the spark plugs according to the manual; Swap the coil of the suspect cylinder with the one from another cylinder: if the misfire "moves" to that cylinder, the coil is the culprit; Fill up at a trusted station; If it persists, do a compression test
+h: On the Fit the coils usually sit directly on the spark plugs (one per cylinder), which makes the coil-swap test quick and cheap.
+
+P0325 | Knock sensor circuit | Ignition | 2
+e: The sensor that "listens" for engine knock is not sending a normal signal; without it the ECU retards the ignition for safety and the car loses power.
+c: Knock sensor; Connector or wiring; Low-octane or adulterated fuel (if there is real knocking)
+a: Check the sensor connector (it is on the engine block); Replace the sensor if the connector and wiring are fine; Use good-quality fuel
+
+P0327 | Knock sensor: low signal | Ignition | 2
+c: Knock sensor; Shorted or poorly connected wiring
+a: See the tips for P0325
+
+P0328 | Knock sensor: high signal | Ignition | 2
+c: Knock sensor; Wiring; Mechanical noise in the engine
+a: See the tips for P0325
+
+P0335 | Crankshaft position (CKP) sensor circuit | Ignition | 3
+r: The engine may stall or fail to start suddenly. Avoid long trips.
+e: The ECU is not receiving a reliable signal for the engine speed. Without it the engine may not start or may stall while driving.
+c: Crankshaft (CKP) sensor; Reluctor wheel damaged or dirty; Wiring or connector; Loose sensor mounting
+a: Check the sensor connector and wiring; If the engine stalls on its own or is slow to start, do not leave it for later; Have the sensor tested with an oscilloscope or replace it
+
+P0336 | Crankshaft (CKP) sensor: signal out of range | Ignition | 3
+c: Crankshaft sensor; Reluctor wheel; Wiring
+a: See the tips for P0335
+
+P0340 | Camshaft position (CMP) sensor circuit | Ignition | 3
+r: The car may start with difficulty or enter limp mode. Avoid long trips.
+e: The ECU is not receiving a reliable signal from the camshaft position sensor.
+c: Camshaft (CMP) sensor; Wiring or connector; Timing problem (chain or belt); Reluctor wheel
+a: Check the connector and wiring; Check the oil level; Test or replace the sensor
+
+P0341 | Camshaft (CMP) sensor: signal out of range | Ignition | 3
+c: Camshaft sensor; Camshaft timing; Wiring
+a: See the tips for P0340
+
+P0351 | Ignition coil A primary/secondary circuit | Ignition | 3
+r: A misfire is likely: if the light flashes, stop.
+c: Ignition coil; Coil connector; Spark plug of that cylinder; Wiring
+a: Swap the coil with another one and see whether the code changes; Replace the spark plugs; Check the connector
+
+# ================================================================= EMISSIONS AND EVAP
+
+P0401 | EGR flow insufficient | Emissions | 2
+e: The exhaust gas recirculation (EGR) is not letting enough gas through.
+c: EGR passages clogged with carbon; EGR valve stuck; EGR sensor or solenoid; Vacuum hoses
+a: Clean the EGR valve and passages; Test the valve and its position sensor; Check the vacuum hoses
+h: On Hondas an EGR fault can come with an irregular idle.
+
+P0402 | EGR flow excessive | Emissions | 2
+c: EGR valve stuck open; EGR position sensor; Solenoid
+a: See the tips for P0401; An unstable idle or a stumbling engine at low rpm is the typical symptom
+
+P0420 | Catalyst system efficiency below threshold (bank 1) | Exhaust and emissions | 2
+r: Yes. The car usually drives normally, but fix it soon: ignoring it can increase fuel consumption and pollution and, over time, damage the catalytic converter.
+e: The ECU compares the oxygen sensor BEFORE the catalytic converter with the one AFTER it. If the rear sensor starts to "copy" the front one, the ECU concludes that the converter is not cleaning the exhaust gases as it should.
+c: Poor-quality or adulterated fuel; Aged rear (post-catalyst) oxygen/A-F sensor; Exhaust leak before the rear sensor (flange, gasket, muffler); Misfire or rich/lean mixture that fouled the converter; Catalytic converter really worn out (common above 100,000 km / 60,000 miles)
+a: Check whether other codes (P03xx, P017x) are present and fix them first: they are often the cause; Fill up at a trusted station and drive a few hundred km; Look for exhaust leaks (hissing or ticking when cold, soot at the joints); Ask a mechanic to compare the front and rear O2 sensors with a scanner; Only replace the converter after ruling out the sensor and leaks: it is the most expensive part
+h: Clearing the code without fixing the cause makes the light come back after 2 to 3 drive cycles.
+
+P0430 | Catalyst system efficiency below threshold (bank 2) | Exhaust and emissions | 2
+e: Same as P0420 but on the second exhaust bank (V6/V8/boxer engines).
+c: See the causes of P0420
+a: See the tips for P0420
+
+P0441 | EVAP system: incorrect purge flow | Emissions (EVAP) | 1
+r: Yes. It does not affect how the car runs, but it keeps the light on.
+e: The system that recovers fuel vapors (EVAP) is not purging as expected.
+c: Purge valve stuck or clogged; Loose or cracked hoses; Saturated or damaged canister
+a: Tighten the fuel cap until it clicks; Inspect the canister hoses; Test the purge valve
+
+P0442 | Small leak in the EVAP system | Emissions (EVAP) | 1
+r: Yes. It does not affect how the car runs.
+e: The system that traps fuel vapors has a small leak.
+c: Fuel cap loose or with a dried-out seal; Cracked EVAP hoses; Vent or purge valve; Canister
+a: Tighten the fuel cap (until it clicks) or replace it; Inspect the EVAP hoses and connections; Ask for a smoke test at a workshop if the code returns
+
+P0443 | EVAP purge valve circuit | Emissions (EVAP) | 1
+c: Purge valve; Wiring or connector; Fuse
+a: Check the purge valve connector; Replace the valve if it is stuck or has an open coil
+
+P0446 | EVAP vent control circuit | Emissions (EVAP) | 1
+c: Canister vent valve; Wiring; Blockage in the vent filter or hose
+a: Check the connector and hoses of the vent valve; Look for dirt or insects in the vent; Replace the valve if needed
+
+P0451 | EVAP pressure sensor: range/performance | Emissions (EVAP) | 1
+c: EVAP pressure sensor; Blocked hose; Fuel cap
+a: Check the fuel cap and the hoses; Test or replace the sensor
+
+P0452 | EVAP pressure sensor: low signal | Emissions (EVAP) | 1
+c: EVAP pressure sensor; Shorted wiring
+a: See the tips for P0451
+
+P0453 | EVAP pressure sensor: high signal | Emissions (EVAP) | 1
+c: EVAP pressure sensor; Open wiring
+a: See the tips for P0451
+
+P0455 | Large leak in the EVAP system | Emissions (EVAP) | 1
+r: Yes. But check the fuel cap: it may be the only cause.
+e: The ECU detected a large leak of fuel vapors.
+c: Fuel cap open, missing or without a seal; EVAP hose disconnected or cracked; Damaged canister or valves
+a: First of all, tighten the fuel cap (until it clicks) or replace it; Inspect the EVAP hoses under the car and near the tank; If it comes back, ask for a smoke test
+h: After tightening or replacing the cap, the light can take a few days of driving (several cycles) to go off by itself; the app lets you clear it manually.
+
+P0456 | Very small leak in the EVAP system | Emissions (EVAP) | 1
+r: Yes. It does not affect how the car runs.
+e: A tiny leak of fuel vapors (about the size of a 0.5 mm hole).
+c: Fuel cap with a weak seal; Connections or hoses with micro-cracks; EVAP valves
+a: Replace the fuel cap (cheap and the most common cause); Inspect the connections; Smoke test if it persists
+h: It is usually tied to the fuel cap. Avoid topping up the tank after the pump clicks off: it can soak the charcoal canister and trigger EVAP codes.
+
+P0457 | EVAP leak: fuel cap loose or missing | Emissions (EVAP) | 1
+r: Yes. It does not affect how the car runs.
+e: The ECU indicates that the fuel cap may be loose, poorly sealed or missing.
+c: Fuel cap loose or not fully closed; Rubber seal of the cap dried out or cracked; Damaged filler neck
+a: Tighten the cap until you hear the clicks; If the seal is dried out, replace the cap; Then drive normally: the light should go off after a few drive cycles
+
+# ================================================================= IDLE, ELECTRICAL AND ECU
+
+P0480 | Radiator fan relay / control circuit | Cooling | 3
+r: Watch out for overheating: keep an eye on the temperature on the Dashboard.
+c: Fan fuse or relay; Faulty fan motor; Wiring or connector; Temperature sensor
+a: Turn the A/C on and see or hear whether the fan runs; Check the fuse and relay; If the temperature goes above 105 °C, stop and switch the engine off
+
+P0500 | Vehicle speed sensor circuit | Vehicle speed | 2
+c: Speed sensor (VSS) on the transmission; Wiring or connector; Wheel (ABS) sensors; Instrument cluster
+a: Check whether the car's speedometer works; compare it with the speed in the app; Check the sensor connector; It can come with ABS codes: ask for a reading of the other modules
+
+P0501 | Vehicle speed sensor: range/performance | Vehicle speed | 2
+c: Speed sensor; Tires of a different size than the original; Wiring
+a: See the tips for P0500; Check the tire size
+
+P0505 | Idle control system malfunction | Idle control | 2
+r: Yes, but the car may stumble or stall when stopping.
+e: The ECU cannot control the idle speed.
+c: Dirty throttle body; Air leak; Idle actuator / valve; Battery recently disconnected (the ECU lost its learned values)
+a: Clean the throttle body with a proper throttle-body cleaner; Look for air leaks; If the battery was disconnected, let the engine idle, with no accessories, until it warms up: the ECU relearns by itself
+h: After cleaning the throttle body or disconnecting the battery, the idle can be high or irregular for a few minutes until the ECU relearns.
+
+P0506 | Idle speed lower than expected | Idle control | 2
+c: Dirty throttle body; Insufficient air intake; High electrical load; Idle actuator
+a: Clean the throttle body; Check the air filter; See the tips for P0505
+
+P0507 | Idle speed higher than expected | Idle control | 2
+c: Air leak (main cause); Throttle body; Idle actuator; Vacuum hoses
+a: Inspect vacuum hoses and intake rubbers; Clean the throttle body; See the tips for P0505
+
+P0560 | System voltage out of range | Electrical | 2
+c: Weak battery or corroded terminals; Alternator; Loose ground wire
+a: Check the battery and terminals; See the voltage on the Dashboard: with the engine running it should be between 13.5 and 14.8 V
+
+P0562 | System voltage low | Electrical | 3
+r: Avoid long trips: the car can stall if the charge runs out.
+e: The ECU measured low voltage in the system (the battery or the alternator are not keeping the charge up).
+c: Old or weak battery; Alternator (regulator, diodes, belt); Loose or corroded terminals; Ground wire
+a: On the Dashboard, check the system voltage: engine off ~12.4 V or more; running ~13.5–14.8 V; Clean and tighten the terminals; Have the battery and the alternator tested at an auto-electric shop (often free); Low voltage causes "ghost" codes in several sensors
+h: The battery light on the instrument panel or dim headlights reinforce the suspicion on the alternator.
+
+P0563 | System voltage high | Electrical | 3
+c: Alternator voltage regulator; Faulty battery
+a: Check the voltage on the Dashboard: above 15 V with the engine running is abnormal; Take it to an auto-electric shop
+
+P0571 | Brake switch circuit | Electrical | 1
+c: Brake light switch; Pedal adjustment; Wiring
+a: Check that the brake lights come on and go off correctly; Replace the switch if necessary (cheap)
+
+P0600 | Serial communication link malfunction | Control module (ECU) | 3
+c: Problem in the CAN network; Faulty module; Wiring; Weak battery
+a: See the tips in the Communication section (U0100); Check the battery and terminals; Ask for a full reading of the modules
+
+P0601 | Internal control module memory checksum error | Control module (ECU) | 3
+c: Faulty control module (ECU); Corrupted programming; Voltage drop during an update
+a: Clear the code once and see whether it returns; If it does, repair or replacement of the ECU is likely; go to a specialised workshop
+
+P0602 | Control module programming error | Control module (ECU) | 3
+c: Control module not programmed or with the wrong software; Control module recently replaced
+a: Look for a workshop with equipment to program the control module
+
+P0606 | Control module processor fault | Control module (ECU) | 3
+c: Faulty control module (ECU); Ground or power supply of the module; Unstable voltage
+a: Check the battery, ground and power supply; If it persists, repair or replace the ECU
+
+P0641 | Sensor reference voltage (5 V) fault | Control module (ECU) | 3
+r: It can cause loss of power and wrong readings on several sensors.
+c: Short in one of the sensors (TPS, MAP, pedal); Wiring; Control module
+a: If several sensor codes appear together, this is a common cause; Disconnect the sensors one by one (ignition off) to find the short; Take it to a workshop
+
+P0685 | ECM/PCM power relay control circuit (PGM-FI) | Control module (ECU) | 3
+r: The car may not start or may stall suddenly.
+c: Main injection relay; Fuse; Wiring or connector
+a: Check the main injection fuse and relay (engine-bay fuse box); Swap the relay with an identical one to test
+h: On Hondas this relay is called the PGM-FI Main Relay.
+
+# ================================================================= AUTOMATIC TRANSMISSION
+
+P0700 | Transmission control system (there are codes in the transmission) | Transmission | 2
+e: The transmission control module turned the check-engine light on to warn that it has its own stored codes. This code alone does not say what the problem is.
+c: Any fault detected by the transmission module (sensors, solenoids, ATF fluid)
+a: Ask for a reading of the transmission module (TCM) with a full scanner: many generic readers only read the engine; Check the level and condition of the transmission fluid; Pay attention to jerks or slipping
+
+P0705 | Transmission range sensor (automatic) | Transmission | 3
+c: P-R-N-D position sensor/switch; Lever or cable adjustment; Wiring
+a: If the car only starts in N or does not start, that is the typical symptom; Check the cable adjustment and the connector; Have the sensor tested
+
+P0715 | Input/turbine speed sensor circuit | Transmission | 3
+c: Turbine speed sensor; Wiring; Internal problem
+a: Ask for a reading of the modules; Watch for jerks or slipping
+
+P0720 | Output speed sensor circuit | Transmission | 3
+c: Output speed sensor; Wiring; Connector
+a: Check whether the speedometer works; Check the sensor connector
+
+P0730 | Incorrect gear ratio | Transmission | 3
+r: Avoid driving: there may be slipping and damage to the transmission.
+c: ATF level or quality; Solenoids; Internal wear of the transmission
+a: Check the level and condition of the transmission fluid; Take it to a workshop specialised in automatic transmissions
+
+P0741 | Torque converter clutch (TCC) performance | Transmission | 3
+c: ATF fluid; TCC solenoid; Torque converter
+a: Check the fluid level and condition; Ask for a transmission diagnosis
+
+P0743 | Torque converter clutch (TCC) solenoid circuit | Transmission | 3
+c: Solenoid; Wiring; Connector
+a: Ask for a transmission diagnosis
+
+# ================================================================= GENERIC P2xxx
+
+P2096 | Post-catalyst fuel trim: too lean (bank 1) | Emissions | 2
+e: The rear oxygen sensor reports that the mixture after the catalytic converter has been lean for too long.
+c: Rear O2 sensor; Exhaust leak; Genuinely lean mixture (see P0171)
+a: See the tips for P0171 and P0420
+
+P2097 | Post-catalyst fuel trim: too rich (bank 1) | Emissions | 2
+c: Rear O2 sensor; Genuinely rich mixture (see P0172); Catalytic converter
+a: See the tips for P0172 and P0420
+
+P2101 | Throttle actuator motor: circuit range/performance | Electronic throttle | 3
+r: The car can enter safe mode (limited power). Avoid long trips.
+e: The motor that opens the throttle (electronic throttle) does not respond as the ECU commands.
+c: Throttle body dirty (carbon); Worn throttle motor; Wiring or connector; Missing relearn after cleaning or after the battery was disconnected
+a: Clean the throttle body; Check the connector; If the battery was disconnected, switch the ignition off for a few minutes and let the ECU relearn; If it persists, replace or recondition the throttle body
+
+P2102 | Throttle actuator motor: low signal | Electronic throttle | 3
+c: Wiring shorted; Throttle body
+a: See the tips for P2101
+
+P2103 | Throttle actuator motor: high signal | Electronic throttle | 3
+c: Wiring; Throttle body
+a: See the tips for P2101
+
+P2106 | Throttle actuator: forced limited power | Electronic throttle | 3
+e: The ECU put the car in safe mode because of an electronic throttle fault.
+c: Throttle body; Pedal sensor; Wiring
+a: See the tips for P2101; Ask for a full reading
+
+P2111 | Throttle actuator stuck open | Electronic throttle | 3
+c: Dirty or faulty throttle body
+a: Clean or replace the throttle body; Avoid driving
+
+P2112 | Throttle actuator stuck closed | Electronic throttle | 3
+c: Dirty or faulty throttle body
+a: Clean or replace the throttle body
+
+P2119 | Throttle body closed position out of range | Electronic throttle | 3
+c: Dirty throttle body; Return spring; Wiring
+a: Clean the throttle body; Check the connector
+
+P2122 | Accelerator pedal position sensor (D): low signal | Electronic throttle | 3
+r: The car may lose power or enter safe mode.
+c: Pedal sensor; Connector; Wiring
+a: Check the pedal connector; Replace the pedal assembly if necessary
+
+P2123 | Accelerator pedal position sensor (D): high signal | Electronic throttle | 3
+c: Pedal sensor; Wiring
+a: See the tips for P2122
+
+P2135 | Throttle position sensors (A/B): signals do not match | Electronic throttle | 3
+c: Throttle body; Position sensor; Wiring
+a: Clean the throttle body; If it persists, replace the assembly
+
+P2187 | System too lean at idle (bank 1) | Fuel and air intake | 2
+c: Air leak; Injectors; Fuel pressure
+a: See the tips for P0171; Focus on air leaks at low rpm
+
+P2188 | System too rich at idle (bank 1) | Fuel and air intake | 2
+c: Leaking injectors; High fuel pressure; EVAP purge stuck open
+a: See the tips for P0172
+
+P2195 | O2/A-F sensor (B1-S1): signal stuck lean | Oxygen sensor | 2
+c: Aged A/F sensor; Exhaust leak; Genuinely lean mixture
+a: See P0171; If the mixture is normal, replace the A/F sensor
+
+P2196 | O2/A-F sensor (B1-S1): signal stuck rich | Oxygen sensor | 2
+c: Aged A/F sensor; Genuinely rich mixture
+a: See P0172; If the mixture is normal, replace the A/F sensor
+
+P2270 | Rear O2 sensor (B1-S2): signal stuck lean | Oxygen sensor | 2
+c: Rear O2 sensor; Exhaust leak
+a: See the tips for P0420 and P2096
+
+P2271 | Rear O2 sensor (B1-S2): signal stuck rich | Oxygen sensor | 2
+c: Rear O2 sensor; Rich mixture
+a: See the tips for P0420 and P2097
+
+P2610 | Control module internal engine-off timer | Control module (ECU) | 1
+r: Yes.
+c: Weak or disconnected battery; Control module
+a: It usually appears after the battery was disconnected; clear the code and see whether it returns
+
+P2646 | VTEC / rocker arm: pressure or actuation problem (bank 1) | Variable valve timing (VTEC) | 2
+r: Yes, carefully: there may be a loss of power at high rpm. Check the oil before anything else.
+e: The system that changes the camshaft profile (VTEC) is not responding as expected, or the VTEC oil pressure switch reports a problem.
+c: Low oil level or very old or wrong oil; VTEC solenoid screen (filter) clogged; Faulty VTEC solenoid; VTEC oil pressure switch; Wiring or connector
+a: Check the oil level and condition (and change it if it is due, with the specification in the manual); Ask for the VTEC solenoid and its filter screen to be checked; Check the pressure switch connector
+h: On Hondas this code is usually fixed with the right oil and cleaning or replacing the VTEC solenoid.
+
+P2647 | VTEC / rocker arm: actuation stuck on (bank 1) | Variable valve timing (VTEC) | 2
+c: VTEC solenoid; Pressure switch; Oil; Wiring
+a: See the tips for P2646
+
+P2A00 | O2/A-F sensor (B1-S1): range/performance | Oxygen sensor | 2
+c: Aged A/F sensor; Exhaust leak; Wrong mixture
+a: See the tips for P0133 and P0171
+
+# ================================================================= HONDA (P1xxx, manufacturer-specific)
+# The exact meaning of P1xxx codes depends on model and year. The ones below are the usual meanings on Hondas.
+
+P1106 | Barometric pressure (BARO) sensor: performance | Honda: sensors | 2
+c: BARO/MAP sensor; Wiring; Blockage at the sensing point
+a: Check the connector and hoses; Test the sensor
+
+P1107 | Barometric pressure (BARO) sensor: low signal | Honda: sensors | 2
+c: BARO sensor; Shorted wiring
+a: Check the connector; Test the sensor
+
+P1108 | Barometric pressure (BARO) sensor: high signal | Honda: sensors | 2
+c: BARO sensor; Open wiring
+a: Check the connector; Test the sensor
+
+P1121 | Throttle position (TP) sensor: signal lower than expected | Honda: throttle | 2
+c: Throttle position sensor; Dirty throttle body; Wiring
+a: Clean the throttle body; Check the connector
+
+P1122 | Throttle position (TP) sensor: signal higher than expected | Honda: throttle | 2
+c: Throttle position sensor; Throttle body; Wiring
+a: Clean the throttle body; Check the connector
+
+P1128 | MAP sensor: signal lower than expected | Honda: sensors | 2
+c: MAP sensor; Loose vacuum hose; Air leak
+a: Check the sensor hose; Look for air leaks
+
+P1129 | MAP sensor: signal higher than expected | Honda: sensors | 2
+c: MAP sensor; Clogged hose; Wiring
+a: Check the hose and the connector of the sensor
+
+P1259 | VTEC system malfunction | Honda: variable valve timing (VTEC) | 2
+r: Yes, carefully. There may be a loss of power at high rpm.
+e: The ECU detected that the VTEC (variable valve timing) is not acting as it should.
+c: Low or old oil; VTEC solenoid screen clogged; VTEC solenoid; VTEC pressure switch; Wiring
+a: Check the oil level and condition; Ask for the VTEC solenoid and filter screen to be checked; Test the pressure switch
+h: On Hondas this is the classic VTEC code; most cases are solved with the right oil and cleaning the solenoid.
+
+P1297 | Electrical load detector (ELD): low voltage | Honda: electrical | 2
+e: The module that measures the car's electrical consumption (ELD) so the ECU can control the alternator sent a low signal.
+c: ELD module; Wiring or connector; Weak battery
+a: Check the battery and terminals; Check the ELD connector (in the engine-bay fuse box); Test the alternator
+
+P1298 | Electrical load detector (ELD): high voltage | Honda: electrical | 2
+c: ELD module; Wiring; Alternator
+a: See the tips for P1297; High voltage can point to an alternator problem
+
+P1361 | TDC sensor: intermittent signal | Honda: ignition | 3
+c: TDC sensor; Wiring; Timing
+a: Check the connector and wiring; If the engine stalls or misfires, go to a workshop
+
+P1362 | TDC sensor: no signal | Honda: ignition | 3
+r: It can leave the car unable to start. Avoid long trips.
+c: TDC sensor; Wiring; Timing
+a: Check the connector and wiring; Test or replace the sensor
+
+P1381 | Cylinder position (CYP) sensor: intermittent signal | Honda: ignition | 3
+c: CYP sensor; Wiring; Timing
+a: Check the connector and wiring; Test the sensor
+
+P1382 | Cylinder position (CYP) sensor: no signal | Honda: ignition | 3
+c: CYP sensor; Wiring; Timing
+a: Check the connector and wiring; Test or replace the sensor
+
+P1456 | EVAP leak (fuel tank side) | Honda: emissions (EVAP) | 1
+r: Yes. It does not affect how the car runs.
+e: Honda's ECU detected a leak of fuel vapors on the fuel-tank side.
+c: Fuel cap loose or dried out; Tank hoses; Tank pressure/vapor control valve; Tank pressure sensor
+a: Tighten the cap until it clicks or replace it; Inspect the hoses and connections of the tank; If the code returns, ask for a smoke test
+h: On Hondas it is one of the most frequent codes related to the fuel cap; check the cap before spending on parts.
+
+P1457 | EVAP leak (canister side) | Honda: emissions (EVAP) | 1
+r: Yes. It does not affect how the car runs.
+c: Canister hoses; Purge/vent valves; Cracked canister
+a: Inspect the hoses and connections of the canister; Smoke test; Check the valves
+
+P1491 | EGR: valve lift insufficient | Honda: emissions | 2
+c: EGR valve with carbon; Vacuum hoses; Lift sensor
+a: Clean or replace the EGR valve; Check the hoses
+
+P1519 | Idle air control (IAC) valve: circuit fault | Honda: idle control | 2
+c: IAC valve; Wiring or connector; Dirty throttle body
+a: Clean the throttle body and the valve; Check the connector
+
+P1607 | ECM/PCM internal circuit failure | Honda: control module (ECU) | 3
+c: Faulty control module (ECU); Power/ground
+a: Check the battery and the ECU ground; If it persists, repair or replace the ECU
+
+# ================================================================= COMMUNICATION (CAN NETWORK)
+
+U0001 | High-speed communication network (CAN) failure | Communication (network) | 3
+r: It can affect several systems at the same time (instrument cluster, ABS, engine management). Avoid long trips.
+e: The car's modules "talk" over a network (CAN). This code points to a problem in that network, not in a specific part.
+c: Weak battery or unstable voltage; Fuse or relay of some module; CAN network wiring with poor contact or moisture; Faulty module bringing the network down
+a: First check the battery and the terminals; Check the fuses; If many U codes appear at the same time, look for the common cause (battery, ground, network); Ask for a full scanner reading to see which modules are not answering
+
+U0073 | Communication network (bus) off | Communication (network) | 3
+c: Network wiring; Faulty module; Battery
+a: See the tips for U0001
+
+U0100 | Lost communication with the engine control module (ECM/PCM) | Communication (network) | 3
+r: If the car runs normally it may have been a past event (e.g. a weak battery). If it misfires or does not start, do not drive.
+c: Weak or disconnected battery; Fuse/relay of the engine control module; CAN wiring; Faulty control module
+a: Check the battery and terminals; Check the fuses and the main injection relay; Clear the code and see whether it returns
+h: It can show up right after disconnecting the battery or after starting with a weak battery.
+
+U0101 | Lost communication with the transmission control module (TCM) | Communication (network) | 3
+c: Fuse; CAN wiring; Transmission control module
+a: See the tips for U0100
+
+U0121 | Lost communication with the ABS module | Communication (network) | 3
+r: The ABS may be disabled: the brakes work, but without ABS. Drive with extra care.
+c: ABS fuse; Wiring; ABS module
+a: Check the ABS fuses; Ask for a reading of the ABS module
+
+U0140 | Lost communication with the body control module (BCM) | Communication (network) | 2
+c: Fuse; Wiring; BCM module
+a: See the tips for U0100
+
+U0155 | Lost communication with the instrument cluster | Communication (network) | 2
+c: Instrument cluster; Wiring; Fuse
+a: Check whether the cluster works normally; See the tips for U0100

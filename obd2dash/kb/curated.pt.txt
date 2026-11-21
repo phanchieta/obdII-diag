@@ -1,0 +1,520 @@
+# Base de códigos de falha em português (Honda Fit e carros OBD2 em geral).
+# Pode ser editada à mão. Blocos separados por linha em branco. Linhas com # são comentários.
+#
+#   CÓDIGO | título | sistema | gravidade        (1 baixa · 2 média · 3 alta · 4 crítica)
+#   e: o que significa      r: posso rodar?      c: causas (separe com ;)      a: o que fazer (separe com ;)
+#   h: dica específica para Honda
+#
+# Atenção: um código aponta um CIRCUITO ou SISTEMA, não necessariamente a peça com defeito.
+# Famílias repetitivas (sensores de O2, cilindros, bobinas, injetores, solenoides) são geradas em kb.py.
+
+# ================================================================= MOTOR: AR E COMBUSTÍVEL
+
+P0125 | Motor demorou demais para esquentar (malha fechada não liberada) | Arrefecimento | 1
+e: O motor levou tempo demais para atingir a temperatura de trabalho, então a central não passou para o controle fino da mistura com o sensor de oxigênio.
+c: Termostato preso aberto; Sensor de temperatura do motor (ECT) com leitura errada; Nível de líquido de arrefecimento baixo; Ventoinha ligando sem necessidade
+a: Observe no Painel se a temperatura chega a 85–95 °C em poucos minutos; Confira o nível do líquido (com o motor frio); Se a temperatura sobe muito devagar, troque o termostato; Se o ponteiro do carro e o app divergem, teste o sensor ECT
+
+P0128 | Termostato: temperatura do motor abaixo da regulagem | Arrefecimento | 1
+r: Sim. Não há risco imediato, mas o motor trabalha frio, gasta mais e polui mais.
+e: A temperatura do líquido de arrefecimento não subiu até o valor esperado dentro do tempo normal, sinal típico de termostato preso aberto.
+c: Termostato preso aberto (causa mais comum); Sensor de temperatura do motor (ECT) com leitura errada; Líquido de arrefecimento baixo ou com ar no sistema
+a: No Painel, veja se a temperatura do motor demora a passar de 80 °C ou fica abaixo de 80 °C na estrada; Troque o termostato (peça barata, mas troque junto o líquido de arrefecimento); Se o termostato estiver bom, teste o sensor ECT
+h: Costuma vir acompanhado de aquecimento fraco da cabine e consumo um pouco maior.
+
+P0171 | Mistura pobre demais (banco 1) | Combustível e admissão | 2
+r: Sim, com cuidado. Pode haver perda de força e consumo maior. Se o motor falhar ou engasgar, evite acelerar forte.
+e: A central já está injetando combustível extra e, mesmo assim, o sensor de oxigênio indica excesso de ar na mistura: falta combustível ou está entrando ar que não deveria.
+c: Entrada falsa de ar (mangueira de vácuo rachada, junta do coletor, borracha do filtro de ar, válvula PCV); Corpo de borboleta ou marcha lenta sujos; Pressão de combustível baixa (filtro entupido, bomba fraca); Bicos injetores sujos; Sensor MAP ou sensor A/F (oxigênio) com leitura errada; Vazamento no escapamento antes do sensor
+a: No Painel, veja a correção de combustível de longo prazo (LTFT): acima de +10% confirma mistura pobre; Inspecione mangueiras de vácuo, abraçadeiras e a borracha entre filtro de ar e borboleta; Limpe o corpo de borboleta; Troque o filtro de combustível se estiver vencido e teste a pressão da bomba; Limpeza de bicos; Se persistir, teste os sensores A/F e MAP com scanner
+h: Em carros flex, trocar de combustível (gasolina para etanol ou o contrário) pode gerar desvio de mistura por alguns dias enquanto a central reaprende; se o código voltar sempre, procure a causa mecânica.
+
+P0172 | Mistura rica demais (banco 1) | Combustível e admissão | 2
+r: Sim, com cuidado. Consumo alto e, se durar, pode sujar velas e danificar o catalisador.
+e: O sensor de oxigênio indica excesso de combustível na mistura e a central já tentou reduzir a injeção.
+c: Filtro de ar entupido; Bico injetor vazando ou sujo; Válvula de purga do canister (EVAP) presa aberta; Sensor de temperatura do motor (ECT) lendo frio demais; Pressão de combustível alta (regulador, retorno); Sensor A/F ou MAP com leitura errada; Velas ou bobinas ruins
+a: No Painel, veja a correção de longo prazo (LTFT): abaixo de −10% confirma mistura rica; Troque/inspecione o filtro de ar; Confira se o carro tem cheiro de gasolina no escapamento; Teste a válvula de purga do EVAP; Verifique temperatura do motor no Painel (se ficar sempre fria, suspeite do ECT/termostato)
+
+P0174 | Mistura pobre demais (banco 2) | Combustível e admissão | 2
+e: Igual ao P0171, mas no segundo banco de cilindros (motores V6/V8/boxer). Em motor de 4 cilindros em linha esse código não deveria aparecer.
+c: Entrada falsa de ar; Pressão de combustível baixa; Sensor de fluxo/pressão de ar; Bicos sujos
+a: Veja as dicas do P0171; Se P0171 e P0174 aparecem juntos, a causa é comum aos dois bancos (ar, pressão de combustível ou medidor de ar)
+
+P0175 | Mistura rica demais (banco 2) | Combustível e admissão | 2
+e: Igual ao P0172, mas no segundo banco de cilindros.
+c: Filtro de ar entupido; Bicos vazando; Pressão de combustível alta; Válvula de purga presa aberta
+a: Veja as dicas do P0172
+
+P0191 | Sensor de pressão do trilho de combustível fora de faixa | Combustível | 2
+c: Sensor de pressão de combustível; Bomba fraca ou filtro entupido; Fiação
+a: Confira a pressão de combustível com manômetro; Troque o filtro de combustível se estiver vencido; Teste o sensor
+
+P0217 | Superaquecimento do motor | Arrefecimento | 4
+r: NÃO. Pare em local seguro, desligue o motor e espere esfriar. Rodar superaquecido pode empenar o cabeçote.
+e: A temperatura do líquido de arrefecimento passou do limite seguro.
+c: Falta de líquido de arrefecimento (vazamento); Ventoinha do radiador não liga (fusível, relé ou motor); Termostato preso fechado; Radiador entupido; Bomba d'água fraca; Tampa do radiador defeituosa
+a: Nunca abra a tampa do radiador com o motor quente; Com o motor frio, confira o nível e procure vazamentos; Verifique se a ventoinha liga ao ligar o ar-condicionado; Leve ao mecânico antes de voltar a rodar
+
+P0230 | Circuito da bomba de combustível | Combustível | 3
+r: Pode deixar o carro parado de repente. Evite trajetos longos.
+c: Fusível ou relé da bomba; Fiação ou conector; Bomba de combustível com defeito; Interruptor de segurança (inércia)
+a: Verifique o fusível e o relé da bomba de combustível; Ao ligar a ignição, deve-se ouvir a bomba zumbindo por 2 segundos; Se não ouvir, teste relé, fiação e bomba
+
+# ================================================================= MOTOR: IGNIÇÃO E ROTAÇÃO
+
+P0016 | Sincronismo entre virabrequim e comando de válvulas (banco 1) | Distribuição | 3
+r: Evite rodar até verificar: se a distribuição estiver errada o motor pode sofrer danos graves.
+e: A central percebe que a posição do comando de válvulas não combina com a do virabrequim, como se a corrente/correia estivesse fora de ponto ou um dos sensores estivesse falhando.
+c: Corrente ou correia de distribuição esticada ou fora de ponto; Sensor de fase (CMP) ou de rotação (CKP) com defeito; Roda fônica danificada; Óleo baixo ou degradado (em motor com comando variável); Fiação ou conector
+a: Se houver ruído, falhas ou dificuldade de partida, não force o motor; Confira nível e estado do óleo; Peça ao mecânico para verificar o ponto da distribuição e os sensores
+
+P0300 | Falha de ignição aleatória ou em vários cilindros | Ignição | 3
+r: Se a luz estiver PISCANDO, pare assim que for seguro: falha forte destrói o catalisador. Se a luz está fixa e o motor anda bem, dá para ir com cuidado até a oficina, sem acelerar forte.
+e: A central detectou que um ou mais cilindros não queimaram direito a mistura (o motor "falha" ou "engasga"). Em P0300 ela não conseguiu apontar um cilindro só.
+c: Velas desgastadas (causa mais comum); Bobinas de ignição ou cabos com defeito; Combustível ruim ou com água; Entrada falsa de ar (junto com P0171); Bicos injetores sujos; Baixa compressão (válvulas, anéis); Sensor de rotação ou de fase
+a: Veja se existem também P0301 a P0304: indicam o cilindro com problema; Inspecione e troque as velas conforme o manual; Troque a bobina do cilindro suspeito de lugar com a de outro cilindro: se a falha "mudar" de cilindro, a bobina é a culpada; Abasteça em posto de confiança; Se persistir, teste de compressão
+h: No Fit as bobinas costumam ficar diretamente sobre as velas (uma por cilindro), o que torna o teste de troca de bobinas rápido e barato.
+
+P0325 | Circuito do sensor de detonação (knock) | Ignição | 2
+e: O sensor que "escuta" batida de pino não está enviando sinal normal; sem ele a central atrasa a ignição por segurança, e o carro perde força.
+c: Sensor de detonação; Conector ou fiação; Combustível de baixa octanagem ou adulterado (se houver detonação real)
+a: Verifique o conector do sensor (fica no bloco do motor); Troque o sensor se o conector e a fiação estiverem bons; Abasteça com combustível de qualidade
+
+P0327 | Sensor de detonação: sinal baixo | Ignição | 2
+c: Sensor de detonação; Fiação em curto ou com mau contato
+a: Veja as dicas do P0325
+
+P0328 | Sensor de detonação: sinal alto | Ignição | 2
+c: Sensor de detonação; Fiação; Ruído mecânico no motor
+a: Veja as dicas do P0325
+
+P0335 | Circuito do sensor de rotação do virabrequim (CKP) | Ignição | 3
+r: Pode apagar ou não pegar de repente. Evite rodar longe.
+e: A central não recebe sinal confiável da rotação do motor. Sem ele o motor pode não dar partida ou apagar em movimento.
+c: Sensor de rotação (CKP); Roda fônica danificada ou suja; Fiação ou conector; Folga de montagem do sensor
+a: Verifique o conector e a fiação do sensor; Se o motor apaga sozinho ou demora a pegar, não deixe para depois; Peça teste do sensor com osciloscópio ou troque o sensor
+
+P0336 | Sensor de rotação (CKP): sinal fora da faixa | Ignição | 3
+c: Sensor de rotação; Roda fônica; Fiação
+a: Veja as dicas do P0335
+
+P0340 | Circuito do sensor de fase (comando de válvulas, CMP) | Ignição | 3
+r: O carro pode pegar com dificuldade ou entrar em modo de segurança. Evite rodar longe.
+e: A central não recebe sinal confiável do sensor de posição do comando de válvulas.
+c: Sensor de fase (CMP); Fiação ou conector; Problema de sincronismo (corrente/correia); Roda fônica
+a: Verifique o conector e a fiação; Confira o nível do óleo; Teste ou troque o sensor
+
+P0341 | Sensor de fase (CMP): sinal fora da faixa | Ignição | 3
+c: Sensor de fase; Sincronismo do comando; Fiação
+a: Veja as dicas do P0340
+
+P0351 | Circuito da bobina de ignição A (primário/secundário) | Ignição | 3
+r: Falha de ignição é provável: se a luz piscar, pare.
+c: Bobina de ignição; Conector da bobina; Vela do cilindro correspondente; Fiação
+a: Troque a bobina de lugar com outra e veja se o código muda; Troque as velas; Verifique o conector
+
+# ================================================================= EMISSÕES E EVAP
+
+P0401 | Fluxo insuficiente da válvula EGR | Emissões | 2
+e: A recirculação de gases de escape (EGR) não está deixando passar gás suficiente.
+c: Passagens da EGR entupidas por carvão; Válvula EGR travada; Sensor ou solenoide da EGR; Mangueiras de vácuo
+a: Limpeza da válvula e dos dutos da EGR; Teste a válvula e seu sensor de posição; Verifique as mangueiras de vácuo
+h: Em Honda a falha de EGR pode vir junto de marcha lenta irregular.
+
+P0402 | Fluxo excessivo da válvula EGR | Emissões | 2
+c: Válvula EGR presa aberta; Sensor de posição da EGR; Solenoide
+a: Veja as dicas do P0401; Marcha lenta instável ou motor engasgando em baixa rotação é sintoma típico
+
+P0420 | Eficiência do catalisador abaixo do limite (banco 1) | Escapamento e emissões | 2
+r: Sim. O carro costuma andar normal, mas corrija em breve: ignorar pode aumentar consumo e poluição e, com o tempo, danificar o catalisador.
+e: A central compara o sensor de oxigênio ANTES do catalisador com o que fica DEPOIS. Se o de trás passa a "copiar" o da frente, ela entende que o catalisador não está limpando os gases como deveria.
+c: Combustível de má qualidade ou adulterado; Sensor de oxigênio/A-F traseiro (pós-catalisador) envelhecido; Vazamento no escapamento antes do sensor traseiro (flange, junta, abafador); Falha de ignição ou mistura rica/pobre que sujou o catalisador; Catalisador realmente desgastado (comum acima de 100 mil km)
+a: Veja se há outros códigos (P03xx, P017x) e resolva-os antes: costumam ser a causa; Abasteça em posto de confiança e rode algumas centenas de km; Procure vazamento no escapamento (chiado ou batida a frio, fuligem nas juntas); Peça ao mecânico para comparar os sensores de O2 dianteiro e traseiro com scanner; Só troque o catalisador depois de descartar sensor e vazamento: é a peça mais cara
+h: Limpar o código sem corrigir a causa faz a luz voltar depois de 2 a 3 ciclos de condução.
+
+P0430 | Eficiência do catalisador abaixo do limite (banco 2) | Escapamento e emissões | 2
+e: Igual ao P0420, mas no segundo banco do escapamento (motores V6/V8/boxer).
+c: Veja as causas do P0420
+a: Veja as dicas do P0420
+
+P0441 | Sistema EVAP: fluxo de purga incorreto | Emissões (EVAP) | 1
+r: Sim. Não afeta o funcionamento, mas deixa a luz acesa.
+e: O sistema que recupera vapores de combustível (EVAP) não está purgando como esperado.
+c: Válvula de purga presa ou entupida; Mangueiras soltas ou rachadas; Canister saturado ou danificado
+a: Reaperte a tampa do tanque até ouvir os cliques; Inspecione as mangueiras do canister; Teste a válvula de purga
+
+P0442 | Vazamento pequeno no sistema EVAP | Emissões (EVAP) | 1
+r: Sim. Não afeta o funcionamento do carro.
+e: O sistema que prende os vapores de combustível tem um vazamento pequeno.
+c: Tampa do tanque mal fechada ou com borracha ressecada; Mangueiras do EVAP rachadas; Válvula de ventilação ou de purga; Canister
+a: Reaperte a tampa do tanque (até clicar) ou troque-a; Inspecione mangueiras e conexões do EVAP; Peça teste de fumaça (smoke test) na oficina se o código voltar
+
+P0443 | Circuito da válvula de purga do EVAP | Emissões (EVAP) | 1
+c: Válvula de purga; Fiação ou conector; Fusível
+a: Verifique o conector da válvula de purga; Troque a válvula se estiver travada ou com bobina aberta
+
+P0446 | Circuito de controle de ventilação do EVAP | Emissões (EVAP) | 1
+c: Válvula de ventilação (vent) do canister; Fiação; Obstrução no filtro ou mangueira de ventilação
+a: Verifique conector e mangueiras da válvula de ventilação; Procure sujeira ou insetos no respiro; Troque a válvula se necessário
+
+P0451 | Sensor de pressão do EVAP: faixa/desempenho | Emissões (EVAP) | 1
+c: Sensor de pressão do EVAP; Mangueira obstruída; Tampa do tanque
+a: Verifique a tampa do tanque e as mangueiras; Teste ou troque o sensor
+
+P0452 | Sensor de pressão do EVAP: sinal baixo | Emissões (EVAP) | 1
+c: Sensor de pressão do EVAP; Fiação em curto
+a: Veja as dicas do P0451
+
+P0453 | Sensor de pressão do EVAP: sinal alto | Emissões (EVAP) | 1
+c: Sensor de pressão do EVAP; Fiação aberta
+a: Veja as dicas do P0451
+
+P0455 | Vazamento grande no sistema EVAP | Emissões (EVAP) | 1
+r: Sim. Mas confira a tampa do tanque: pode ser só ela.
+e: A central detectou um vazamento grande de vapores de combustível.
+c: Tampa do tanque aberta, perdida ou sem vedação; Mangueira do EVAP solta ou rachada; Canister ou válvulas danificados
+a: Primeiro de tudo, reaperte a tampa do tanque (até clicar) ou troque-a; Inspecione mangueiras do EVAP sob o carro e perto do tanque; Se voltar, peça teste de fumaça
+h: Após trocar ou apertar a tampa, a luz pode levar alguns dias de uso (vários ciclos) para apagar sozinha; o app permite apagar manualmente.
+
+P0456 | Vazamento muito pequeno no sistema EVAP | Emissões (EVAP) | 1
+r: Sim. Não afeta o funcionamento.
+e: Um vazamento minúsculo de vapores de combustível (do tamanho de um furo de 0,5 mm).
+c: Tampa do tanque com vedação fraca; Conexões ou mangueiras com micro-rachaduras; Válvulas do EVAP
+a: Troque a tampa do tanque (barata e a causa mais comum); Inspecione as conexões; Teste de fumaça se persistir
+h: Costuma estar ligado à tampa do tanque. Evite completar o tanque depois que a bomba desarma: isso pode encharcar o canister de carvão e gerar códigos de EVAP.
+
+P0457 | Vazamento no EVAP: tampa do tanque solta ou ausente | Emissões (EVAP) | 1
+r: Sim. Não afeta o funcionamento.
+e: A central indica que a tampa do tanque pode estar solta, mal vedada ou ausente.
+c: Tampa do tanque solta ou mal fechada; Borracha da tampa ressecada ou rachada; Gargalo do tanque danificado
+a: Aperte a tampa até ouvir os cliques; Se a borracha estiver ressecada, troque a tampa; Depois dirija normalmente: a luz deve apagar em alguns ciclos de condução
+
+# ================================================================= MARCHA LENTA, ELÉTRICA E ECU
+
+P0480 | Circuito do relé/controle da ventoinha do radiador | Arrefecimento | 3
+r: Cuidado com superaquecimento: fique de olho na temperatura no Painel.
+c: Fusível ou relé da ventoinha; Motor da ventoinha com defeito; Fiação ou conector; Sensor de temperatura
+a: Ligue o ar-condicionado e veja/ouça se a ventoinha liga; Verifique fusível e relé; Se a temperatura passar de 105 °C, pare e desligue o motor
+
+P0500 | Circuito do sensor de velocidade do veículo | Velocidade | 2
+c: Sensor de velocidade (VSS) no câmbio; Fiação ou conector; Sensores das rodas (ABS); Painel de instrumentos
+a: Veja se o velocímetro do painel funciona; compare com a velocidade no app; Verifique conector do sensor; Pode vir junto de códigos de ABS: peça leitura dos demais módulos
+
+P0501 | Sensor de velocidade: faixa/desempenho | Velocidade | 2
+c: Sensor de velocidade; Pneus de medida diferente da original; Fiação
+a: Veja as dicas do P0500; Confira a medida dos pneus
+
+P0505 | Controle da marcha lenta com defeito | Marcha lenta | 2
+r: Sim, mas o carro pode engasgar ou apagar em paradas.
+e: A central não consegue controlar a rotação da marcha lenta.
+c: Corpo de borboleta sujo; Entrada falsa de ar; Válvula/atuador da marcha lenta; Bateria desligada recentemente (a central perdeu o aprendizado)
+a: Limpe o corpo de borboleta com limpa-borboleta próprio; Procure entradas falsas de ar; Se a bateria foi desligada, deixe o motor em marcha lenta, sem acessórios, até aquecer: a central reaprende sozinha
+h: Depois de limpar a borboleta ou desconectar a bateria, a marcha lenta pode ficar alta/irregular por alguns minutos até a central reaprender.
+
+P0506 | Marcha lenta mais baixa que o esperado | Marcha lenta | 2
+c: Corpo de borboleta sujo; Entrada de ar insuficiente; Carga elétrica alta; Atuador da marcha lenta
+a: Limpe a borboleta; Confira o filtro de ar; Veja as dicas do P0505
+
+P0507 | Marcha lenta mais alta que o esperado | Marcha lenta | 2
+c: Entrada falsa de ar (principal causa); Corpo de borboleta; Atuador da marcha lenta; Mangueiras de vácuo
+a: Inspecione mangueiras de vácuo e borrachas de admissão; Limpe a borboleta; Veja as dicas do P0505
+
+P0560 | Tensão do sistema elétrico fora do normal | Elétrica | 2
+c: Bateria fraca ou terminais oxidados; Alternador; Fio terra solto
+a: Confira bateria e terminais; Veja a tensão no Painel: com o motor ligado deve ficar entre 13,5 e 14,8 V
+
+P0562 | Tensão do sistema baixa | Elétrica | 3
+r: Evite rodar longe: o carro pode apagar se a carga acabar.
+e: A central mediu tensão baixa no sistema (bateria ou alternador não estão mantendo a carga).
+c: Bateria velha/fraca; Alternador (regulador, diodos, correia); Terminais soltos ou oxidados; Fio terra
+a: No Painel, veja a tensão do sistema: motor desligado ~12,4 V ou mais; ligado ~13,5–14,8 V; Limpe e aperte os terminais; Teste a bateria e o alternador em autoelétrica (geralmente grátis); Tensão baixa causa códigos "fantasma" em vários sensores
+h: A luz da bateria no painel acesa ou faróis fracos reforçam a suspeita no alternador.
+
+P0563 | Tensão do sistema alta | Elétrica | 3
+c: Regulador de tensão do alternador; Bateria com defeito
+a: Teste a tensão no Painel: acima de 15 V com o motor ligado é anormal; Leve à autoelétrica
+
+P0571 | Circuito do interruptor do freio | Elétrica | 1
+c: Interruptor da luz de freio; Regulagem do pedal; Fiação
+a: Veja se as luzes de freio acendem e apagam corretamente; Troque o interruptor se necessário (barato)
+
+P0600 | Falha na comunicação serial da central | Central eletrônica (ECU) | 3
+c: Problema na rede CAN; Módulo com defeito; Fiação; Bateria fraca
+a: Veja as dicas da seção de Comunicação (U0100); Verifique bateria e terminais; Peça leitura completa dos módulos
+
+P0601 | Falha interna de memória da central (checksum) | Central eletrônica (ECU) | 3
+c: Central (ECU) com defeito; Programação corrompida; Queda de tensão durante atualização
+a: Apague o código uma vez e veja se volta; Se voltar, é provável reparo ou troca da central; leve a uma oficina especializada
+
+P0602 | Erro de programação da central | Central eletrônica (ECU) | 3
+c: Central não programada ou com software incorreto; Central trocada recentemente
+a: Procure oficina com equipamento para programar a central
+
+P0606 | Falha no processador da central | Central eletrônica (ECU) | 3
+c: Central (ECU) com defeito; Fio terra ou alimentação da central; Tensão instável
+a: Cheque bateria, terra e alimentação; Se persistir, reparo ou troca da central
+
+P0641 | Tensão de referência dos sensores (5 V) com falha | Central eletrônica (ECU) | 3
+r: Pode causar perda de potência e leituras erradas em vários sensores.
+c: Curto em algum sensor (TPS, MAP, pedal); Fiação; Central
+a: Se vários códigos de sensores aparecem juntos, esta é uma causa comum; Desconecte sensores um a um (com a ignição desligada) para achar o curto; Leve a uma oficina
+
+P0685 | Circuito do relé principal da central (PGM-FI) | Central eletrônica (ECU) | 3
+r: O carro pode não pegar ou apagar de repente.
+c: Relé principal do sistema de injeção; Fusível; Fiação ou conector
+a: Verifique o fusível e o relé principal da injeção (caixa do cofre do motor); Troque o relé por um idêntico para testar
+h: Em Honda esse relé se chama PGM-FI Main Relay.
+
+# ================================================================= CÂMBIO AUTOMÁTICO
+
+P0700 | Sistema de controle da transmissão (existem códigos no câmbio) | Câmbio | 2
+e: A central do câmbio acendeu a luz de injeção para avisar que tem códigos próprios armazenados. Este código sozinho não diz qual é o problema.
+c: Qualquer falha detectada pela central do câmbio (sensores, solenoides, óleo ATF)
+a: Peça leitura da central do câmbio (TCM) com scanner completo: muitos leitores genéricos só leem o motor; Confira nível e estado do óleo do câmbio; Preste atenção em trancos ou patinação
+
+P0705 | Sensor de posição da alavanca (câmbio automático) | Câmbio | 3
+c: Sensor/interruptor da posição P-R-N-D; Ajuste da alavanca; Fiação
+a: Se o carro dá partida só em N ou não dá partida, é sintoma típico; Verifique o ajuste do cabo e o conector; Peça teste do sensor
+
+P0715 | Circuito do sensor de velocidade de entrada do câmbio | Câmbio | 3
+c: Sensor de velocidade da turbina; Fiação; Problema interno
+a: Peça leitura dos módulos; Observe trancos ou patinação
+
+P0720 | Circuito do sensor de velocidade de saída do câmbio | Câmbio | 3
+c: Sensor de velocidade de saída; Fiação; Conector
+a: Veja se o velocímetro funciona; Verifique conector do sensor
+
+P0730 | Relação de marchas incorreta | Câmbio | 3
+r: Evite rodar: pode haver patinação e dano ao câmbio.
+c: Nível ou qualidade do óleo ATF; Solenoides; Desgaste interno do câmbio
+a: Confira nível e estado do óleo do câmbio; Leve a oficina especializada em câmbio automático
+
+P0741 | Embreagem do conversor de torque (TCC) com desempenho ruim | Câmbio | 3
+c: Óleo ATF; Solenoide do TCC; Conversor de torque
+a: Verifique nível e estado do óleo; Peça diagnóstico do câmbio
+
+P0743 | Circuito do solenoide do conversor de torque (TCC) | Câmbio | 3
+c: Solenoide; Fiação; Conector
+a: Peça diagnóstico do câmbio
+
+# ================================================================= GENÉRICOS P2xxx
+
+P2096 | Pós-catalisador: mistura pobre (banco 1) | Emissões | 2
+e: O sensor de oxigênio traseiro indica que a mistura depois do catalisador está pobre por tempo demais.
+c: Sensor de O2 traseiro; Vazamento no escapamento; Mistura pobre (veja P0171)
+a: Veja as dicas do P0171 e do P0420
+
+P2097 | Pós-catalisador: mistura rica (banco 1) | Emissões | 2
+c: Sensor de O2 traseiro; Mistura rica (veja P0172); Catalisador
+a: Veja as dicas do P0172 e do P0420
+
+P2101 | Motor da borboleta eletrônica: desempenho do circuito | Acelerador eletrônico | 3
+r: O carro pode entrar em modo de segurança (potência limitada). Evite rodar longe.
+e: O motor que abre a borboleta de aceleração (acelerador eletrônico) não responde como a central comanda.
+c: Corpo de borboleta sujo (carvão); Motor da borboleta com desgaste; Fiação ou conector; Falta de aprendizado após limpeza ou queda de bateria
+a: Limpe o corpo de borboleta; Verifique o conector; Se a bateria foi desligada, desligue a ignição por alguns minutos e deixe a central reaprender; Se persistir, troque ou recondicione o corpo de borboleta
+
+P2102 | Motor da borboleta eletrônica: sinal baixo | Acelerador eletrônico | 3
+c: Fiação em curto; Corpo de borboleta
+a: Veja as dicas do P2101
+
+P2103 | Motor da borboleta eletrônica: sinal alto | Acelerador eletrônico | 3
+c: Fiação; Corpo de borboleta
+a: Veja as dicas do P2101
+
+P2106 | Acelerador eletrônico: potência limitada | Acelerador eletrônico | 3
+e: A central colocou o carro em modo de segurança por causa de falha no acelerador eletrônico.
+c: Corpo de borboleta; Sensor do pedal; Fiação
+a: Veja as dicas do P2101; Peça leitura completa
+
+P2111 | Borboleta eletrônica presa aberta | Acelerador eletrônico | 3
+c: Corpo de borboleta sujo ou com defeito
+a: Limpeza ou troca do corpo de borboleta; Evite rodar
+
+P2112 | Borboleta eletrônica presa fechada | Acelerador eletrônico | 3
+c: Corpo de borboleta sujo ou com defeito
+a: Limpeza ou troca do corpo de borboleta
+
+P2119 | Borboleta eletrônica: posição de repouso fora do normal | Acelerador eletrônico | 3
+c: Corpo de borboleta sujo; Mola de retorno; Fiação
+a: Limpe o corpo de borboleta; Verifique o conector
+
+P2122 | Sensor do pedal do acelerador (D): sinal baixo | Acelerador eletrônico | 3
+r: O carro pode perder força ou entrar em modo de segurança.
+c: Sensor do pedal; Conector; Fiação
+a: Verifique o conector do pedal; Troque o conjunto do pedal se necessário
+
+P2123 | Sensor do pedal do acelerador (D): sinal alto | Acelerador eletrônico | 3
+c: Sensor do pedal; Fiação
+a: Veja as dicas do P2122
+
+P2135 | Sensores da borboleta (A/B): sinais não coincidem | Acelerador eletrônico | 3
+c: Corpo de borboleta; Sensor de posição; Fiação
+a: Limpe o corpo de borboleta; Se persistir, troque o conjunto
+
+P2187 | Sistema pobre demais em marcha lenta (banco 1) | Combustível e admissão | 2
+c: Entrada falsa de ar; Bicos; Pressão de combustível
+a: Veja as dicas do P0171; Foque em vazamentos de ar em baixa rotação
+
+P2188 | Sistema rico demais em marcha lenta (banco 1) | Combustível e admissão | 2
+c: Bicos vazando; Pressão de combustível alta; Purga do EVAP presa
+a: Veja as dicas do P0172
+
+P2195 | Sensor de O2/A-F (B1-S1): sinal preso em pobre | Sensor de oxigênio | 2
+c: Sensor A/F envelhecido; Vazamento no escapamento; Mistura realmente pobre
+a: Veja P0171; Se a mistura está normal, troque o sensor A/F
+
+P2196 | Sensor de O2/A-F (B1-S1): sinal preso em rico | Sensor de oxigênio | 2
+c: Sensor A/F envelhecido; Mistura realmente rica
+a: Veja P0172; Se a mistura está normal, troque o sensor A/F
+
+P2270 | Sensor de O2 traseiro (B1-S2): sinal preso em pobre | Sensor de oxigênio | 2
+c: Sensor de O2 traseiro; Vazamento no escapamento
+a: Veja as dicas do P0420 e P2096
+
+P2271 | Sensor de O2 traseiro (B1-S2): sinal preso em rico | Sensor de oxigênio | 2
+c: Sensor de O2 traseiro; Mistura rica
+a: Veja as dicas do P0420 e P2097
+
+P2610 | Temporizador interno da central (motor desligado) | Central eletrônica (ECU) | 1
+r: Sim.
+c: Bateria fraca ou desligada; Central
+a: Normalmente aparece após desconectar a bateria; apague o código e veja se volta
+
+P2646 | VTEC / balancim: pressão ou atuação com problema (banco 1) | Comando variável (VTEC) | 2
+r: Sim, com cuidado: pode haver perda de força em alta rotação. Confira o óleo antes de tudo.
+e: O sistema que muda o perfil do comando de válvulas (VTEC) não está respondendo como esperado ou o pressostato de óleo do VTEC acusa problema.
+c: Nível baixo ou óleo muito velho ou errado; Tela (filtro) do solenoide VTEC entupida; Solenoide VTEC com defeito; Pressostato de óleo do VTEC; Fiação ou conector
+a: Confira o nível e o estado do óleo (e troque se estiver vencido, com a especificação do manual); Peça para verificar o solenoide VTEC e sua tela de filtro; Verifique o conector do pressostato
+h: Em Honda esse código geralmente é resolvido com óleo correto e limpeza/troca do solenoide VTEC.
+
+P2647 | VTEC / balancim: atuação presa ligada (banco 1) | Comando variável (VTEC) | 2
+c: Solenoide VTEC; Pressostato; Óleo; Fiação
+a: Veja as dicas do P2646
+
+P2A00 | Sensor de O2/A-F (B1-S1): faixa/desempenho | Sensor de oxigênio | 2
+c: Sensor A/F envelhecido; Vazamento no escapamento; Mistura incorreta
+a: Veja as dicas do P0133 e do P0171
+
+# ================================================================= HONDA (P1xxx, específicos do fabricante)
+# O significado exato dos códigos P1xxx depende de modelo e ano. Os abaixo são os significados usuais em Honda.
+
+P1106 | Sensor de pressão barométrica (BARO): desempenho | Honda: sensores | 2
+c: Sensor BARO/MAP; Fiação; Entupimento no ponto de captação
+a: Verifique conector e mangueiras; Teste o sensor
+
+P1107 | Sensor de pressão barométrica (BARO): sinal baixo | Honda: sensores | 2
+c: Sensor BARO; Fiação em curto
+a: Verifique conector; Teste o sensor
+
+P1108 | Sensor de pressão barométrica (BARO): sinal alto | Honda: sensores | 2
+c: Sensor BARO; Fiação aberta
+a: Verifique conector; Teste o sensor
+
+P1121 | Sensor da borboleta (TP): sinal menor que o esperado | Honda: acelerador | 2
+c: Sensor de posição da borboleta; Corpo de borboleta sujo; Fiação
+a: Limpe o corpo de borboleta; Verifique o conector
+
+P1122 | Sensor da borboleta (TP): sinal maior que o esperado | Honda: acelerador | 2
+c: Sensor de posição da borboleta; Corpo de borboleta; Fiação
+a: Limpe o corpo de borboleta; Verifique o conector
+
+P1128 | Sensor MAP: sinal menor que o esperado | Honda: sensores | 2
+c: Sensor MAP; Mangueira de vácuo solta; Entrada falsa de ar
+a: Verifique a mangueira do sensor; Procure entradas falsas de ar
+
+P1129 | Sensor MAP: sinal maior que o esperado | Honda: sensores | 2
+c: Sensor MAP; Mangueira obstruída; Fiação
+a: Verifique a mangueira e o conector do sensor
+
+P1259 | Sistema VTEC com defeito | Honda: comando variável (VTEC) | 2
+r: Sim, com cuidado. Pode haver perda de força em alta rotação.
+e: A central detectou que o VTEC (comando de válvulas variável) não está atuando como deveria.
+c: Nível baixo ou óleo velho; Tela do solenoide VTEC entupida; Solenoide VTEC; Pressostato do VTEC; Fiação
+a: Confira nível e estado do óleo; Peça verificação do solenoide VTEC e da tela de filtro; Teste o pressostato
+h: Em Honda esse é o código clássico de VTEC; a maioria dos casos se resolve com óleo correto e limpeza do solenoide.
+
+P1297 | Detector de carga elétrica (ELD): tensão baixa | Honda: elétrica | 2
+e: O módulo que mede o consumo elétrico do carro (ELD) para a central controlar o alternador enviou sinal baixo.
+c: Módulo ELD; Fiação ou conector; Bateria fraca
+a: Confira a bateria e os terminais; Verifique o conector do ELD (na caixa de fusíveis do cofre); Teste o alternador
+
+P1298 | Detector de carga elétrica (ELD): tensão alta | Honda: elétrica | 2
+c: Módulo ELD; Fiação; Alternador
+a: Veja as dicas do P1297; A tensão alta pode indicar problema no alternador
+
+P1361 | Sensor TDC: sinal intermitente | Honda: ignição | 3
+c: Sensor TDC; Fiação; Distribuição
+a: Verifique conector e fiação; Se o motor apaga ou falha, procure oficina
+
+P1362 | Sensor TDC: sem sinal | Honda: ignição | 3
+r: Pode deixar o carro sem partida. Evite rodar longe.
+c: Sensor TDC; Fiação; Distribuição
+a: Verifique conector e fiação; Teste ou troque o sensor
+
+P1381 | Sensor de posição do cilindro (CYP): sinal intermitente | Honda: ignição | 3
+c: Sensor CYP; Fiação; Distribuição
+a: Verifique conector e fiação; Teste o sensor
+
+P1382 | Sensor de posição do cilindro (CYP): sem sinal | Honda: ignição | 3
+c: Sensor CYP; Fiação; Distribuição
+a: Verifique conector e fiação; Teste ou troque o sensor
+
+P1456 | Vazamento no sistema EVAP (lado do tanque) | Honda: emissões (EVAP) | 1
+r: Sim. Não afeta o funcionamento.
+e: A central de Honda detectou vazamento de vapores de combustível no lado do tanque de combustível.
+c: Tampa do tanque mal fechada ou ressecada; Mangueiras do tanque; Válvula de controle de pressão/vapor do tanque; Sensor de pressão do tanque
+a: Aperte a tampa até ouvir os cliques ou troque-a; Inspecione mangueiras e conexões do tanque; Se o código voltar, peça teste de fumaça
+h: Na Honda é um dos códigos mais frequentes relacionados à tampa do tanque; confira a tampa antes de gastar com peças.
+
+P1457 | Vazamento no sistema EVAP (lado do canister) | Honda: emissões (EVAP) | 1
+r: Sim. Não afeta o funcionamento.
+c: Mangueiras do canister; Válvulas de purga/ventilação; Canister rachado
+a: Inspecione mangueiras e conexões do canister; Teste de fumaça; Verifique as válvulas
+
+P1491 | EGR: levantamento da válvula insuficiente | Honda: emissões | 2
+c: Válvula EGR com carvão; Mangueiras de vácuo; Sensor de levantamento
+a: Limpe ou troque a válvula EGR; Verifique as mangueiras
+
+P1519 | Válvula de controle da marcha lenta (IAC): circuito com defeito | Honda: marcha lenta | 2
+c: Válvula IAC; Fiação ou conector; Corpo de borboleta sujo
+a: Limpe o corpo de borboleta e a válvula; Verifique o conector
+
+P1607 | Falha interna do circuito da central (ECM/PCM) | Honda: central (ECU) | 3
+c: Central (ECU) com defeito; Alimentação/terra
+a: Verifique bateria e terra da central; Se persistir, reparo ou troca da central
+
+# ================================================================= COMUNICAÇÃO (REDE CAN)
+
+U0001 | Falha na rede de comunicação de alta velocidade (CAN) | Comunicação (rede) | 3
+r: Pode afetar vários sistemas ao mesmo tempo (painel, ABS, injeção). Evite rodar longe.
+e: Os módulos do carro "conversam" por uma rede (CAN). Este código indica problema nessa rede, não numa peça específica.
+c: Bateria fraca ou tensão instável; Fusível ou relé de algum módulo; Fiação da rede CAN com mau contato ou umidade; Módulo com defeito derrubando a rede
+a: Primeiro confira a bateria e os terminais; Verifique fusíveis; Se aparecem muitos códigos U ao mesmo tempo, procure a causa comum (bateria, terra, rede); Peça scanner completo para ver quais módulos não respondem
+
+U0073 | Rede de comunicação (barramento) desligada | Comunicação (rede) | 3
+c: Fiação da rede; Módulo com defeito; Bateria
+a: Veja as dicas do U0001
+
+U0100 | Perda de comunicação com a central do motor (ECM/PCM) | Comunicação (rede) | 3
+r: Se o carro funciona normalmente, pode ter sido um evento passado (ex.: bateria fraca). Se falhar ou não pegar, não rode.
+c: Bateria fraca ou desligada; Fusível/relé da central do motor; Fiação CAN; Central com defeito
+a: Confira bateria e terminais; Verifique fusíveis e relé principal da injeção; Apague o código e veja se volta
+h: Pode aparecer logo depois de desconectar a bateria ou de partida com bateria fraca.
+
+U0101 | Perda de comunicação com a central do câmbio (TCM) | Comunicação (rede) | 3
+c: Fusível; Fiação CAN; Central do câmbio
+a: Veja as dicas do U0100
+
+U0121 | Perda de comunicação com o módulo de ABS | Comunicação (rede) | 3
+r: O ABS pode estar desativado: os freios funcionam, mas sem ABS. Dirija com mais atenção.
+c: Fusível do ABS; Fiação; Módulo ABS
+a: Verifique fusíveis do ABS; Peça leitura do módulo ABS
+
+U0140 | Perda de comunicação com o módulo da carroceria (BCM) | Comunicação (rede) | 2
+c: Fusível; Fiação; Módulo BCM
+a: Veja as dicas do U0100
+
+U0155 | Perda de comunicação com o painel de instrumentos | Comunicação (rede) | 2
+c: Painel de instrumentos; Fiação; Fusível
+a: Verifique se o painel funciona normalmente; Veja as dicas do U0100
